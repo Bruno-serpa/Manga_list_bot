@@ -1,10 +1,6 @@
 import discord
 from key import TOKEN
 from discord.ext import commands
-import requests
-import random
-import re
-from translate import status_translations, genre_translations
 from api_request import perform_api_request
 
 intents = discord.Intents.default()
@@ -12,10 +8,10 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
 TOKEN = TOKEN
 
-# Defina a URL da API GraphQL da AniList
+# Definindo a URL da API GraphQL do AniList
 url = 'https://graphql.anilist.co'
 
-# Defina a sua consulta GraphQL para obter um manga aleatório do gênero
+# Definindo a consulta GraphQL para obter um manga aleatório do gênero
 query = '''
 query ($genre: String, $perPage: Int) {
   Page(perPage: $perPage) {
@@ -39,7 +35,7 @@ query ($genre: String, $perPage: Int) {
 '''
 
 
-# Defina os cabeçalhos da requisição
+# Definindo os cabeçalhos da requisição
 headers = {
     'Content-Type': 'application/json',
 }
