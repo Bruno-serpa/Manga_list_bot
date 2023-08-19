@@ -2,7 +2,7 @@ import disnake
 from disnake.ext import commands
 from key import TOKEN
 from api_request import perform_api_request
-from disnake.ui import Select, View
+
 
 intents = disnake.Intents.default()
 intents.message_content = True
@@ -53,12 +53,24 @@ async def on_ready():
 #--------------------------------------------------------------- add comandos -----------------------------------------------------------------------
 
 
+
 # /acao
 @bot.slash_command(name='acao', description='Pega um mangá aleatório que contenha o gênero ação')
 async def get_random_action_manga(inter):
     variables = {
         'genre': 'Action',
-        'perPage': 50
+        'perPage': 100
+    }
+    formatted_message = perform_api_request(url, query, variables, headers)
+    await inter.response.send_message(formatted_message)
+
+
+# /aventura
+@bot.slash_command(name='aventura', description='Pega um mangá aleatório que contenha o gênero aventura')
+async def get_random_adventure_manga(inter):
+    variables = {
+        'genre': 'Adventure',
+        'perPage': 100
     }
     formatted_message = perform_api_request(url, query, variables, headers)
     await inter.response.send_message(formatted_message)
