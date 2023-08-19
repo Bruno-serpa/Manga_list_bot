@@ -22,6 +22,7 @@ def perform_api_request(url, query, variables, headers):
             description_cleaned = random_manga['description']
             description_cleaned = re.sub(r'<[bB][rR]>', '\n', description_cleaned)
             description_cleaned = re.sub(r'<[iI]>|<\/[iI]>', '', description_cleaned)
+            description_cleaned = re.sub(r'<[bB]>|<\/[bB]>', '**', description_cleaned)
             description_cleaned = re.sub(r'<[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
             description_cleaned = re.sub(r'<\/[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
 
