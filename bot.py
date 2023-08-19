@@ -3,8 +3,8 @@ from key import TOKEN
 from discord.ext import commands
 import requests
 import random
-from translate import Translator
 import re
+from translate import status_translations, genre_translations  # Importa as listas de traduções
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -46,8 +46,6 @@ variables = {
     'perPage': 50
 }
 
-translator = Translator(to_lang="pt")
-
 @bot.event
 async def on_ready():
     print(f'{bot.user} está online!')
@@ -65,31 +63,31 @@ async def get_random_comedy_manga(ctx):
             manga_list = data['data']['Page']['media']
             random_manga = random.choice(manga_list)
             
-            # Traduzindo os textos para o português
-            status_pt = translator.translate(random_manga['status'])
-            genres_pt = ', '.join(translator.translate(genre) for genre in random_manga['genres'])
+            translated_status = status_translations.get(random_manga['status'], random_manga['status'])
             
-            # Tratando a descrição
+            translated_genres = [genre_translations.get(genre, genre) for genre in random_manga['genres']]
+            formatted_genres = ', '.join(translated_genres)
+            
             description_cleaned = random_manga['description']
-            description_cleaned = description_cleaned.replace('<br>', '\n')  # Substitui <br> por quebras de linha
-            description_cleaned = re.sub(r'<i>|<\/i>', '', description_cleaned)  # Remove as tags <i>
+            description_cleaned = re.sub(r'<[bB][rR]>', '\n', description_cleaned)
+            description_cleaned = re.sub(r'<[iI]>|<\/[iI]>', '', description_cleaned)
+            description_cleaned = re.sub(r'<[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
+            description_cleaned = re.sub(r'<\/[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
             
-            # Divide a descrição em partes menores
             description_parts = [description_cleaned[i:i+400] for i in range(0, len(description_cleaned), 400)]
-            description_pt_parts = [translator.translate(part) for part in description_parts]
-            description_pt = '\n'.join(part for part in description_pt_parts)
+            description = '\n'.join(description_parts)
             
             formatted_message = (
                 f"**Título (romaji):** {random_manga['title']['romaji']}\n"
                 f"**Título (inglês):** {random_manga['title']['english']}\n"
                 f"**Título (nativo):** {random_manga['title']['native']}\n"
-                f"**Status:** {status_pt}\n"
+                f"**Status:** {translated_status}\n"
                 f"**Número de Capítulos:** {random_manga['chapters']}\n"
                 f"**Número de Volumes:** {random_manga['volumes']}\n"
-                f"**Gêneros:** {genres_pt}\n"
-                f"**Descrição:** {description_pt}"
+                f"**Gêneros:** {formatted_genres}\n"
+                f"**Descrição:** {description}"
             )
-            await ctx.send(formatted_message)  # Envia a mensagem formatada no mesmo canal do comando
+            await ctx.send(formatted_message)
     else:
         await ctx.send("Erro na solicitação à API.")
 
