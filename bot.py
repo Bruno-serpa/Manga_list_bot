@@ -1,9 +1,10 @@
-import discord
+import disnake
+from disnake.ext import commands
 from key import TOKEN
-from discord.ext import commands
 from api_request import perform_api_request
+from disnake.ui import Select, View
 
-intents = discord.Intents.default()
+intents = disnake.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
 TOKEN = TOKEN
@@ -43,8 +44,8 @@ headers = {
 # Verificando se o bot tá online
 @bot.event
 async def on_ready():
-    activity = discord.Activity(type=discord.ActivityType.listening, name='Zorro do Asfalto')
-    await bot.change_presence(status=discord.Status.online, activity=activity)
+    activity = disnake.Activity(type=disnake.ActivityType.listening, name='Zorro do Asfalto')
+    await bot.change_presence(status=disnake.Status.online, activity=activity)
     print(f'{bot.user} está online!')
 
 
@@ -52,75 +53,18 @@ async def on_ready():
 #--------------------------------------------------------------- add comandos -----------------------------------------------------------------------
 
 
-
 # /acao
-@bot.command(name='acao')
-async def action_command(ctx):
+@bot.slash_command(name='acao', description='Pega um mangá aleatório que contenha o gênero ação')
+async def get_random_action_manga(inter):
     variables = {
         'genre': 'Action',
         'perPage': 50
     }
     formatted_message = perform_api_request(url, query, variables, headers)
-    await ctx.send(formatted_message)
+    await inter.response.send_message(formatted_message)
 
 
-# /aventura
-@bot.command(name='aventura')
-async def get_random_action_manga(ctx):
-    variables = {
-        'genre': 'Adventure',
-        'perPage': 50
-    }
-    formatted_message = perform_api_request(url, query, variables, headers)
-    await ctx.send(formatted_message)
-    
-       
-# /comedia
-@bot.command(name='comedia')
-async def get_random_comedy_manga(ctx):
-    
-    variables = {
-        'genre': 'Comedy',
-        'perPage': 50
-    }
-    formatted_message = perform_api_request(url, query, variables, headers)
-    await ctx.send(formatted_message)
-
-
-# /drama
-@bot.command(name='drama')
-async def get_random_comedy_manga(ctx):
-    
-    variables = {
-        'genre': 'Drama',
-        'perPage': 50
-    }
-    formatted_message = perform_api_request(url, query, variables, headers)
-    await ctx.send(formatted_message)
-
-
-# /fantasia
-@bot.command(name='fantasia')
-async def get_random_comedy_manga(ctx):
-    
-    variables = {
-        'genre': 'Fantasy',
-        'perPage': 50
-    }
-    formatted_message = perform_api_request(url, query, variables, headers)
-    await ctx.send(formatted_message)
-
-
-# /musica
-@bot.command(name='musica')
-async def get_random_comedy_manga(ctx):
-    
-    variables = {
-        'genre': 'Music',
-        'perPage': 50
-    }
-    formatted_message = perform_api_request(url, query, variables, headers)
-    await ctx.send(formatted_message)
+#--------------------------------------------------------------- fim dos comandos -----------------------------------------------------------------------
 
 # Executa o bot com o token
 bot.run(TOKEN)
