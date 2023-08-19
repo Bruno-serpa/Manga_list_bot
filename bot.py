@@ -30,6 +30,7 @@ query ($genre: String, $perPage: Int) {
       volumes
       genres
       description
+      siteUrl
     }
   }
 }
@@ -85,7 +86,8 @@ async def get_random_comedy_manga(ctx):
                 f"**Número de Capítulos:** {random_manga['chapters']}\n"
                 f"**Número de Volumes:** {random_manga['volumes']}\n"
                 f"**Gêneros:** {formatted_genres}\n"
-                f"**Descrição:** {description}"
+                f"**Descrição:** {description}\n"
+                f"\n**Link para Ler:** {random_manga['siteUrl']}"
             )
             await ctx.send(formatted_message)
     else:
