@@ -12,7 +12,6 @@ genre_translations = {
     "Comedy": "Comédia",
     "Drama": "Drama",
     "Fantasy": "Fantasia",
-    "Magic": "Magia",
     "Music": "Música",
     "Mystery": "Mistério",
     "Psychological": "Psicológico",

@@ -11,7 +11,7 @@ TOKEN = TOKEN
 # Definindo a URL da API GraphQL do AniList
 url = 'https://graphql.anilist.co'
 
-# Definindo a consulta GraphQL para obter um manga aleatório do gênero
+# Definindo a consulta GraphQL para obter um manga aleatório do gênero (LIGHT_NOVEL ou ANIME ou MANGA)
 query = '''
 query ($genre: String, $perPage: Int) {
   Page(perPage: $perPage) {
@@ -43,6 +43,8 @@ headers = {
 # Verificando se o bot tá online
 @bot.event
 async def on_ready():
+    activity = discord.Activity(type=discord.ActivityType.listening, name='Zorro do Asfalto')
+    await bot.change_presence(status=discord.Status.online, activity=activity)
     print(f'{bot.user} está online!')
 
 
@@ -91,6 +93,30 @@ async def get_random_comedy_manga(ctx):
     
     variables = {
         'genre': 'Drama',
+        'perPage': 50
+    }
+    formatted_message = perform_api_request(url, query, variables, headers)
+    await ctx.send(formatted_message)
+
+
+# /fantasia
+@bot.command(name='fantasia')
+async def get_random_comedy_manga(ctx):
+    
+    variables = {
+        'genre': 'Fantasy',
+        'perPage': 50
+    }
+    formatted_message = perform_api_request(url, query, variables, headers)
+    await ctx.send(formatted_message)
+
+
+# /musica
+@bot.command(name='musica')
+async def get_random_comedy_manga(ctx):
+    
+    variables = {
+        'genre': 'Music',
         'perPage': 50
     }
     formatted_message = perform_api_request(url, query, variables, headers)
