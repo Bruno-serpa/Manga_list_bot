@@ -29,18 +29,24 @@ def perform_api_request(url, query, variables, headers):
             description_parts = [description_cleaned[i:i+400] for i in range(0, len(description_cleaned), 400)]
             description = '\n'.join(description_parts)
 
+            if random_manga['averageScore'] is None or random_manga['averageScore'] == 'None':
+                formatted_note = 'Não contém nota'
+            else:
+                formatted_note = f"{random_manga['averageScore']}/100"
+
             formatted_message = (
                 f"**Título (romaji):** {random_manga['title']['romaji']}\n"
                 f"**Título (inglês):** {random_manga['title']['english']}\n"
                 f"**Título (nativo):** {random_manga['title']['native']}\n"
                 f"**Status:** {translated_status}\n"
-                f"**Nota:** {random_manga['averageScore']}/100\n"
+                f"**Nota:** {formatted_note}\n"
                 f"**Número de Capítulos:** {random_manga['chapters']}\n"
                 f"**Número de Volumes:** {random_manga['volumes']}\n"
                 f"**Gêneros:** {formatted_genres}\n"
                 f"**Descrição:** {description}\n"
                 f"\n**Link para Ler:** {random_manga['siteUrl']}"
             )
+
             return formatted_message
     else:
         return "Erro na solicitação à API."

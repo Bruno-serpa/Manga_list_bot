@@ -41,7 +41,7 @@ headers = {
     'Content-Type': 'application/json',
 }
 
-# Verificando se o bot tá online
+# Verificando se o bot tá online e adicionando status de musica
 @bot.event
 async def on_ready():
     activity = disnake.Activity(type=disnake.ActivityType.listening, name='Zorro do Asfalto')
