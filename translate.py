@@ -13,6 +13,7 @@ genre_translations = {
     "Drama": "Drama",
     "Fantasy": "Fantasia",
     "Magic": "Magia",
+    "Music": "Música",
     "Mystery": "Mistério",
     "Psychological": "Psicológico",
     "Romance": "Romance",

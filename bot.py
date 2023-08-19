@@ -4,7 +4,8 @@ from discord.ext import commands
 import requests
 import random
 import re
-from translate import status_translations, genre_translations  # Importa as listas de traduções
+from translate import status_translations, genre_translations
+from api_request import perform_api_request
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -30,11 +31,13 @@ query ($genre: String, $perPage: Int) {
       volumes
       genres
       description
+      averageScore
       siteUrl
     }
   }
 }
 '''
+
 
 # Defina os cabeçalhos da requisição
 headers = {
@@ -48,108 +51,19 @@ async def on_ready():
 
 
 
-#add comandos
-
-
-# /comedia
-@bot.command(name='comedia')
-async def get_random_comedy_manga(ctx):
-    
-    variables = {
-        'genre': 'Comedy',
-        'perPage': 50
-    }
-    
-    response = requests.post(url, json={'query': query, 'variables': variables}, headers=headers)
-
-    if response.status_code == 200:
-        data = response.json()
-        if 'errors' in data:
-            await ctx.send("Erro na resposta da API.")
-        else:
-            manga_list = data['data']['Page']['media']
-            random_manga = random.choice(manga_list)
-            
-            translated_status = status_translations.get(random_manga['status'], random_manga['status'])
-            
-            translated_genres = [genre_translations.get(genre, genre) for genre in random_manga['genres']]
-            formatted_genres = ', '.join(translated_genres)
-            
-            description_cleaned = random_manga['description']
-            description_cleaned = re.sub(r'<[bB][rR]>', '\n', description_cleaned)
-            description_cleaned = re.sub(r'<[iI]>|<\/[iI]>', '', description_cleaned)
-            description_cleaned = re.sub(r'<[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
-            description_cleaned = re.sub(r'<\/[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
-            
-            description_parts = [description_cleaned[i:i+400] for i in range(0, len(description_cleaned), 400)]
-            description = '\n'.join(description_parts)
-            
-            formatted_message = (
-                f"**Título (romaji):** {random_manga['title']['romaji']}\n"
-                f"**Título (inglês):** {random_manga['title']['english']}\n"
-                f"**Título (nativo):** {random_manga['title']['native']}\n"
-                f"**Status:** {translated_status}\n"
-                f"**Número de Capítulos:** {random_manga['chapters']}\n"
-                f"**Número de Volumes:** {random_manga['volumes']}\n"
-                f"**Gêneros:** {formatted_genres}\n"
-                f"**Descrição:** {description}\n"
-                f"\n**Link para Ler:** {random_manga['siteUrl']}"
-            )
-            await ctx.send(formatted_message)
-    else:
-        await ctx.send("Erro na solicitação à API.")
+#--------------------------------------------------------------- add comandos -----------------------------------------------------------------------
 
 
 
-
-# /acao    
+# /acao
 @bot.command(name='acao')
-async def get_random_action_manga(ctx):
+async def action_command(ctx):
     variables = {
         'genre': 'Action',
         'perPage': 50
     }
-
-    response = requests.post(url, json={'query': query, 'variables': variables}, headers=headers)
-
-    if response.status_code == 200:
-        data = response.json()
-        if 'errors' in data:
-            await ctx.send("Erro na resposta da API.")
-        else:
-            manga_list = data['data']['Page']['media']
-            random_manga = random.choice(manga_list)
-            
-            translated_status = status_translations.get(random_manga['status'], random_manga['status'])
-            
-            translated_genres = [genre_translations.get(genre, genre) for genre in random_manga['genres']]
-            formatted_genres = ', '.join(translated_genres)
-            
-            description_cleaned = random_manga['description']
-            description_cleaned = re.sub(r'<[bB][rR]>', '\n', description_cleaned)
-            description_cleaned = re.sub(r'<[iI]>|<\/[iI]>', '', description_cleaned)
-            description_cleaned = re.sub(r'<[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
-            description_cleaned = re.sub(r'<\/[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
-            
-            description_parts = [description_cleaned[i:i+400] for i in range(0, len(description_cleaned), 400)]
-            description = '\n'.join(description_parts)
-            
-            formatted_message = (
-                f"**Título (romaji):** {random_manga['title']['romaji']}\n"
-                f"**Título (inglês):** {random_manga['title']['english']}\n"
-                f"**Título (nativo):** {random_manga['title']['native']}\n"
-                f"**Status:** {translated_status}\n"
-                f"**Número de Capítulos:** {random_manga['chapters']}\n"
-                f"**Número de Volumes:** {random_manga['volumes']}\n"
-                f"**Gêneros:** {formatted_genres}\n"
-                f"**Descrição:** {description}\n"
-                f"\n**Link para Ler:** {random_manga['siteUrl']}"
-            )
-            await ctx.send(formatted_message)
-    else:
-        await ctx.send("Erro na solicitação à API.")
-
-
+    formatted_message = perform_api_request(url, query, variables, headers)
+    await ctx.send(formatted_message)
 
 
 # /aventura
@@ -159,45 +73,32 @@ async def get_random_action_manga(ctx):
         'genre': 'Adventure',
         'perPage': 50
     }
+    formatted_message = perform_api_request(url, query, variables, headers)
+    await ctx.send(formatted_message)
+    
+       
+# /comedia
+@bot.command(name='comedia')
+async def get_random_comedy_manga(ctx):
+    
+    variables = {
+        'genre': 'Comedy',
+        'perPage': 50
+    }
+    formatted_message = perform_api_request(url, query, variables, headers)
+    await ctx.send(formatted_message)
 
-    response = requests.post(url, json={'query': query, 'variables': variables}, headers=headers)
 
-    if response.status_code == 200:
-        data = response.json()
-        if 'errors' in data:
-            await ctx.send("Erro na resposta da API.")
-        else:
-            manga_list = data['data']['Page']['media']
-            random_manga = random.choice(manga_list)
-            
-            translated_status = status_translations.get(random_manga['status'], random_manga['status'])
-            
-            translated_genres = [genre_translations.get(genre, genre) for genre in random_manga['genres']]
-            formatted_genres = ', '.join(translated_genres)
-            
-            description_cleaned = random_manga['description']
-            description_cleaned = re.sub(r'<[bB][rR]>', '\n', description_cleaned)
-            description_cleaned = re.sub(r'<[iI]>|<\/[iI]>', '', description_cleaned)
-            description_cleaned = re.sub(r'<[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
-            description_cleaned = re.sub(r'<\/[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
-            
-            description_parts = [description_cleaned[i:i+400] for i in range(0, len(description_cleaned), 400)]
-            description = '\n'.join(description_parts)
-            
-            formatted_message = (
-                f"**Título (romaji):** {random_manga['title']['romaji']}\n"
-                f"**Título (inglês):** {random_manga['title']['english']}\n"
-                f"**Título (nativo):** {random_manga['title']['native']}\n"
-                f"**Status:** {translated_status}\n"
-                f"**Número de Capítulos:** {random_manga['chapters']}\n"
-                f"**Número de Volumes:** {random_manga['volumes']}\n"
-                f"**Gêneros:** {formatted_genres}\n"
-                f"**Descrição:** {description}\n"
-                f"\n**Link para Ler:** {random_manga['siteUrl']}"
-            )
-            await ctx.send(formatted_message)
-    else:
-        await ctx.send("Erro na solicitação à API.")
+# /drama
+@bot.command(name='drama')
+async def get_random_comedy_manga(ctx):
+    
+    variables = {
+        'genre': 'Drama',
+        'perPage': 50
+    }
+    formatted_message = perform_api_request(url, query, variables, headers)
+    await ctx.send(formatted_message)
 
 # Executa o bot com o token
 bot.run(TOKEN)
