@@ -3,7 +3,6 @@ from disnake.ext import commands
 from key import TOKEN
 from api_request import perform_api_request
 
-
 intents = disnake.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
@@ -34,9 +33,6 @@ query ($genre: String, $perPage: Int) {
   }
 }
 '''
-
-
-# Definindo os cabeçalhos da requisição
 headers = {
     'Content-Type': 'application/json',
 }
@@ -48,35 +44,42 @@ async def on_ready():
     await bot.change_presence(status=disnake.Status.online, activity=activity)
     print(f'{bot.user} está online!')
 
+class Select(disnake.ui.Select):
+    def __init__(self):
+        options=[
+            disnake.SelectOption(label="Ação", description="Pega um mangá aleatório que contenha o gênero ação", value="acao"),
+            disnake.SelectOption(label="Aventura", description="Pega um mangá aleatório que contenha o gênero aventura", value="aventura"),
+        ]
+        super().__init__(placeholder="Escolha um gênero", max_values=1, min_values=1, options=options)
 
-
+    async def callback(self, interaction: disnake.Interaction):
+      
 #--------------------------------------------------------------- add comandos -----------------------------------------------------------------------
 
-
-
-# /acao
-@bot.slash_command(name='acao', description='Pega um mangá aleatório que contenha o gênero ação')
-async def get_random_action_manga(inter):
-    variables = {
-        'genre': 'Action',
-        'perPage': 100
-    }
-    formatted_message = perform_api_request(url, query, variables, headers)
-    await inter.response.send_message(formatted_message)
-
-
-# /aventura
-@bot.slash_command(name='aventura', description='Pega um mangá aleatório que contenha o gênero aventura')
-async def get_random_adventure_manga(inter):
-    variables = {
-        'genre': 'Adventure',
-        'perPage': 100
-    }
-    formatted_message = perform_api_request(url, query, variables, headers)
-    await inter.response.send_message(formatted_message)
-
+        if self.values[0] == "acao":
+            variables = {
+                'genre': 'Action',
+                'perPage': 100
+            }
+            formatted_message = perform_api_request(url, query, variables, headers)
+            await interaction.response.send_message(formatted_message, ephemeral=False)
+        elif self.values[0] == "aventura":
+            variables = {
+                'genre': 'Adventure',
+                'perPage': 100
+            }
+            formatted_message = perform_api_request(url, query, variables, headers)
+            await interaction.response.send_message(formatted_message, ephemeral=False)
 
 #--------------------------------------------------------------- fim dos comandos -----------------------------------------------------------------------
 
-# Executa o bot com o token
+class SelectView(disnake.ui.View):
+    def __init__(self, *, timeout=None):
+        super().__init__(timeout=timeout)
+        self.add_item(Select())
+
+@bot.slash_command(name='menu', description='Pega um mangá aleatório pelo gênero')
+async def menu(ctx):
+    await ctx.response.send_message("Escolha um gênero:", view=SelectView())
+
 bot.run(TOKEN)
