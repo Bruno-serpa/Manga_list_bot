@@ -44,42 +44,49 @@ async def on_ready():
     await bot.change_presence(status=disnake.Status.online, activity=activity)
     print(f'{bot.user} está online!')
 
+#--------------------------------------------------------------- add opções -----------------------------------------------------------------------
+
 class Select(disnake.ui.Select):
     def __init__(self):
         options=[
             disnake.SelectOption(label="Ação", description="Pega um mangá aleatório que contenha o gênero ação", value="acao"),
             disnake.SelectOption(label="Aventura", description="Pega um mangá aleatório que contenha o gênero aventura", value="aventura"),
         ]
-        super().__init__(placeholder="Escolha um gênero", max_values=1, min_values=1, options=options)
+        super().__init__(placeholder="Escolher gênero", max_values=1, min_values=1, options=options)
 
     async def callback(self, interaction: disnake.Interaction):
       
-#--------------------------------------------------------------- add comandos -----------------------------------------------------------------------
+#--------------------------------------------------------------- add interações -----------------------------------------------------------------------
 
+        # Ação:
         if self.values[0] == "acao":
             variables = {
                 'genre': 'Action',
-                'perPage': 100
+                'perPage': 1000
             }
             formatted_message = perform_api_request(url, query, variables, headers)
             await interaction.response.send_message(formatted_message, ephemeral=False)
+            await interaction.message.delete()
+        
+        # Aventura:   
         elif self.values[0] == "aventura":
             variables = {
                 'genre': 'Adventure',
-                'perPage': 100
+                'perPage': 1000
             }
             formatted_message = perform_api_request(url, query, variables, headers)
             await interaction.response.send_message(formatted_message, ephemeral=False)
+            await interaction.message.delete()
 
-#--------------------------------------------------------------- fim dos comandos -----------------------------------------------------------------------
+#--------------------------------------------------------------- add comandos -----------------------------------------------------------------------
 
 class SelectView(disnake.ui.View):
     def __init__(self, *, timeout=None):
         super().__init__(timeout=timeout)
         self.add_item(Select())
 
-@bot.slash_command(name='menu', description='Pega um mangá aleatório pelo gênero')
-async def menu(ctx):
-    await ctx.response.send_message("Escolha um gênero:", view=SelectView())
+@bot.slash_command(name='escolher', description='Pega um mangá aleatório pelo gênero')
+async def escolher(ctx):
+    await ctx.response.send_message("Bem-vindo(a) ao **Mangá List**.\nEscolha um gênero para recomendarmos um mangá aleatório", view=SelectView(), ephemeral=False)
 
 bot.run(TOKEN)

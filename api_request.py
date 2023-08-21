@@ -29,14 +29,21 @@ def perform_api_request(url, query, variables, headers):
             description_parts = [description_cleaned[i:i+400] for i in range(0, len(description_cleaned), 400)]
             description = '\n'.join(description_parts)
 
+            # Condição para a nota
             if random_manga['averageScore'] is None or random_manga['averageScore'] == 'None':
                 formatted_note = 'Não contém nota'
             else:
                 formatted_note = f"{random_manga['averageScore']}/100"
+            
+            # Condição para o nome em ingles
+            if random_manga['title']['english'] is None or random_manga['title']['english'] == 'None':
+                formatted_name_english = random_manga['title']['romaji']
+            else:
+                formatted_name_english = random_manga['title']['english']
 
             formatted_message = (
                 f"**Título (romaji):** {random_manga['title']['romaji']}\n"
-                f"**Título (inglês):** {random_manga['title']['english']}\n"
+                f"**Título (inglês):** {formatted_name_english}\n"
                 f"**Título (nativo):** {random_manga['title']['native']}\n"
                 f"**Status:** {translated_status}\n"
                 f"**Nota:** {formatted_note}\n"
