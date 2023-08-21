@@ -76,15 +76,6 @@ class Select(disnake.ui.Select):
             }
             formatted_message = perform_api_request(url, query, variables, headers)
             await interaction.response.send_message(formatted_message, ephemeral=False)
-            
-        # Artes Marciais:   
-        elif self.values[0] == "artMarciais":
-            variables = {
-                'genre': 'Martial Arts',
-                'perPage': 1000000
-            }
-            formatted_message = perform_api_request(url, query, variables, headers)
-            await interaction.response.send_message(formatted_message, ephemeral=False)
 
 #--------------------------------------------------------------- add comandos -----------------------------------------------------------------------
 
