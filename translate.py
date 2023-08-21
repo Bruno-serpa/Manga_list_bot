@@ -11,6 +11,7 @@ genre_translations = {
     "Adventure": "Aventura",
     "Comedy": "Comédia",
     "Drama": "Drama",
+    "Ecchi": "Ecchi",
     "Fantasy": "Fantasia",
     "Music": "Música",
     "Mystery": "Mistério",
@@ -23,7 +24,7 @@ genre_translations = {
     "Shounen": "Shounen",
     "Slice of Life": "Slice of Life",
     "Sports": "Esportes",
-    "Supernatural": "Sobrenatural",
+    "Sobrenatural": "Sobrenatural",
     "Super Power": "Superpoderes",
     "Tragedy": "Tragédia"
 }

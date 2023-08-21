@@ -31,7 +31,7 @@ def perform_api_request(url, query, variables, headers):
 
             # Condição para a nota
             if random_manga['averageScore'] is None or random_manga['averageScore'] == 'None':
-                formatted_note = 'Não contém nota'
+                formatted_note = 'Sem nota'
             else:
                 formatted_note = f"{random_manga['averageScore']}/100"
             
@@ -40,6 +40,18 @@ def perform_api_request(url, query, variables, headers):
                 formatted_name_english = random_manga['title']['romaji']
             else:
                 formatted_name_english = random_manga['title']['english']
+                
+            # Condição para o números de capitulos
+            if random_manga['chapters'] is None or random_manga['chapters'] == 'None':
+                formatted_chapter_number = 'Indisponível'
+            else:
+                formatted_chapter_number = random_manga['chapters']
+                
+            # Condição para o números de capitulos
+            if random_manga['volumes'] is None or random_manga['volumes'] == 'None':
+                formatted_volum_number = 'Indisponível'
+            else:
+                formatted_volum_number = random_manga['volumes']
 
             formatted_message = (
                 f"**Título (romaji):** {random_manga['title']['romaji']}\n"
@@ -47,8 +59,8 @@ def perform_api_request(url, query, variables, headers):
                 f"**Título (nativo):** {random_manga['title']['native']}\n"
                 f"**Status:** {translated_status}\n"
                 f"**Nota:** {formatted_note}\n"
-                f"**Número de Capítulos:** {random_manga['chapters']}\n"
-                f"**Número de Volumes:** {random_manga['volumes']}\n"
+                f"**Número de Capítulos:** {formatted_chapter_number}\n"
+                f"**Número de Volumes:** {formatted_volum_number}\n"
                 f"**Gêneros:** {formatted_genres}\n"
                 f"**Descrição:** {description}\n"
                 f"\n**Link para Ler:** {random_manga['siteUrl']}"

@@ -62,21 +62,19 @@ class Select(disnake.ui.Select):
         if self.values[0] == "acao":
             variables = {
                 'genre': 'Action',
-                'perPage': 1000
+                'perPage': 1000000
             }
             formatted_message = perform_api_request(url, query, variables, headers)
             await interaction.response.send_message(formatted_message, ephemeral=False)
-            await interaction.message.delete()
         
         # Aventura:   
         elif self.values[0] == "aventura":
             variables = {
                 'genre': 'Adventure',
-                'perPage': 1000
+                'perPage': 1000000
             }
             formatted_message = perform_api_request(url, query, variables, headers)
             await interaction.response.send_message(formatted_message, ephemeral=False)
-            await interaction.message.delete()
 
 #--------------------------------------------------------------- add comandos -----------------------------------------------------------------------
 
@@ -87,6 +85,6 @@ class SelectView(disnake.ui.View):
 
 @bot.slash_command(name='escolher', description='Pega um mangá aleatório pelo gênero')
 async def escolher(ctx):
-    await ctx.response.send_message("Bem-vindo(a) ao **Mangá List**.\nEscolha um gênero para recomendarmos um mangá aleatório", view=SelectView(), ephemeral=False)
+    await ctx.response.send_message("Bem-vindo(a) ao **Mangá List**.\nEscolha um gênero para recomendarmos um mangá aleatório", view=SelectView(), ephemeral=True)
 
 bot.run(TOKEN)
