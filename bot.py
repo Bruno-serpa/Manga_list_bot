@@ -51,6 +51,7 @@ class Select(disnake.ui.Select):
         options=[
             disnake.SelectOption(label="Ação", description="Pega um mangá aleatório que contenha o gênero ação", value="acao"),
             disnake.SelectOption(label="Aventura", description="Pega um mangá aleatório que contenha o gênero aventura", value="aventura"),
+            disnake.SelectOption(label="Artes marciais", description="Pega um mangá aleatório que contenha o gênero artes marciais", value="artMarciais"),
         ]
         super().__init__(placeholder="Escolher gênero", max_values=1, min_values=1, options=options)
 
@@ -71,6 +72,15 @@ class Select(disnake.ui.Select):
         elif self.values[0] == "aventura":
             variables = {
                 'genre': 'Adventure',
+                'perPage': 1000000
+            }
+            formatted_message = perform_api_request(url, query, variables, headers)
+            await interaction.response.send_message(formatted_message, ephemeral=False)
+            
+        # Artes Marciais:   
+        elif self.values[0] == "artMarciais":
+            variables = {
+                'genre': 'Martial Arts',
                 'perPage': 1000000
             }
             formatted_message = perform_api_request(url, query, variables, headers)

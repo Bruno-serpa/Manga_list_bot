@@ -59,14 +59,14 @@ def perform_api_request(url, query, variables, headers):
 #--------------------------------------------------------- Mensagem formatada -----------------------------------------------------------------------
 
             formatted_message = (
-                f"**Título (romaji):** {random_manga['title']['romaji']}\n"
+                f"# {random_manga['title']['romaji']}\n\n"
                 f"**Título (inglês):** {formatted_name_english}\n"
                 f"**Título (nativo):** {random_manga['title']['native']}\n"
-                f"**Status:** {translated_status}\n"
-                f"**Nota:** {formatted_note}\n"
-                f"**Número de Capítulos:** {formatted_chapter_number}\n"
-                f"**Número de Volumes:** {formatted_volum_number}\n"
-                f"**Gêneros:** {formatted_genres}\n"
+                f"**Status:** {translated_status}"
+                f"      **Nota:** {formatted_note}\n"
+                f"**Número de Capítulos:** {formatted_chapter_number}"
+                f"      **Número de Volumes:** {formatted_volum_number}\n"
+                f"**Gêneros:** {formatted_genres}\n\n"
                 f"**Descrição:** {description}\n"
                 f"\n**Link para Ler:** {random_manga['siteUrl']}"
             )
