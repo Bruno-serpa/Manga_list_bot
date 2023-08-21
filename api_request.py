@@ -19,9 +19,12 @@ def perform_api_request(url, query, variables, headers):
             translated_genres = [genre_translations.get(genre, genre) for genre in random_manga['genres']]
             formatted_genres = ', '.join(translated_genres)
 
+#---------------------------------------------------------- Tratamento de erros -----------------------------------------------------------------------
+
+            # Condição para tags HTML na descrição
             description_cleaned = random_manga['description']
             description_cleaned = re.sub(r'<[bB][rR]>', '\n', description_cleaned)
-            description_cleaned = re.sub(r'<[iI]>|<\/[iI]>', '', description_cleaned)
+            description_cleaned = re.sub(r'<[iI]>|<\/[iI]>', '*', description_cleaned)
             description_cleaned = re.sub(r'<[bB]>|<\/[bB]>', '**', description_cleaned)
             description_cleaned = re.sub(r'<[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
             description_cleaned = re.sub(r'<\/[sS][tT][rR][oO][nN][gG]>', '**', description_cleaned)
@@ -47,11 +50,13 @@ def perform_api_request(url, query, variables, headers):
             else:
                 formatted_chapter_number = random_manga['chapters']
                 
-            # Condição para o números de capitulos
+            # Condição para o números de volumes
             if random_manga['volumes'] is None or random_manga['volumes'] == 'None':
                 formatted_volum_number = 'Indisponível'
             else:
                 formatted_volum_number = random_manga['volumes']
+
+#--------------------------------------------------------- Mensagem formatada -----------------------------------------------------------------------
 
             formatted_message = (
                 f"**Título (romaji):** {random_manga['title']['romaji']}\n"
