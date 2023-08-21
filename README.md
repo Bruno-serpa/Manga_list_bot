@@ -5,6 +5,4 @@ O Manga list é um bot de Discord que oferece informações sobre mangás com ba
 
 ## Comandos
 
-- **Comando: `/acao`**: Retorna informações sobre um mangá de ação aleatório.
-
-- **Comando: `/aventura`**: Retorna informações sobre um mangá de aventura aleatório.
+- **Comando: `/escolher`**: Retorna um Dropdown para escolher o gênero que deseja a recomendação.
