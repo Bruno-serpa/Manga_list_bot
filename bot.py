@@ -257,7 +257,7 @@ async def help_command(ctx):
     help_message = (
         "📚 **Ajuda do Bot Mangá List** 📚\n\n"
         "Este bot pode recomendar mangás aleatórios com base em diferentes gêneros. Para usar o bot, siga estes passos:\n\n"
-        "1. Use o comando `/escolher` para escolher um gênero no menu suspenso.\n"
+        "1. Use o comando `/genero` para escolher um gênero no menu suspenso.\n"
         "2. O bot responderá com uma recomendação de mangá aleatório do gênero selecionado.\n\n"
         "Gêneros disponíveis:\n"
         "• Ação\n• Aventura\n• Comédia\n• Drama\n• Ecchi\n• ... (outros gêneros)\n\n"
