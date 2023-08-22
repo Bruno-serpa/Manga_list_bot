@@ -40,7 +40,7 @@ headers = {
 # Verificando se o bot tá online e adicionando status de musica
 @bot.event
 async def on_ready():
-    activity = disnake.Activity(type=disnake.ActivityType.listening, name='Zorro do Asfalto')
+    activity = disnake.Activity(type=disnake.ActivityType.listening, name='Mina do Condomínio')
     await bot.change_presence(status=disnake.Status.online, activity=activity)
     print(f'{bot.user} está online!')
 
@@ -51,7 +51,7 @@ class Select(disnake.ui.Select):
         options=[
             disnake.SelectOption(label="Ação", description="Pega um mangá aleatório que contenha o gênero ação", value="acao"),
             disnake.SelectOption(label="Aventura", description="Pega um mangá aleatório que contenha o gênero aventura", value="aventura"),
-            disnake.SelectOption(label="Artes marciais", description="Pega um mangá aleatório que contenha o gênero artes marciais", value="artMarciais"),
+            disnake.SelectOption(label="Comédia", description="Pega um mangá aleatório que contenha o gênero comédia", value="comedia"),
         ]
         super().__init__(placeholder="Escolher gênero", max_values=1, min_values=1, options=options)
 
@@ -72,6 +72,15 @@ class Select(disnake.ui.Select):
         elif self.values[0] == "aventura":
             variables = {
                 'genre': 'Adventure',
+                'perPage': 1000000
+            }
+            formatted_message = perform_api_request(url, query, variables, headers)
+            await interaction.response.send_message(formatted_message, ephemeral=False)
+            
+        # Comédia:   
+        elif self.values[0] == "comedia":
+            variables = {
+                'genre': 'Comedy',
                 'perPage': 1000000
             }
             formatted_message = perform_api_request(url, query, variables, headers)
