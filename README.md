@@ -3,7 +3,7 @@ Bot do Discord de recomendações de mangás
 
 O Manga list é um bot de Discord que oferece informações sobre mangás com base no gênero. Ele se conecta à API GraphQL da AniList para buscar mangás aleatórios e os formata em uma mensagem para ser enviada em um servidor do Discord. Ele exibe detalhes como títulos, status, nota, número de capítulos, volumes, gêneros, descrição do mangá e um link onde ler.
 
-**Adicionar bot:** Caso queira adicionar o bot no seu servidor clique <a style="" href="https://discord.com/api/oauth2/authorize?client_id=1140557483090378772&permissions=2147576832&scope=bot%20applications.commands" target="_blank" rel="external">Aqui</a>.
+# Atualmente não está online
 
 ## Comandos
 
